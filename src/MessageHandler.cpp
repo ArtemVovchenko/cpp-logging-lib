@@ -57,6 +57,12 @@ namespace Logging {
     }
 
     // Workflow methods
+
+    MessageHandler &MessageHandler::operator()(LogLevel logLevel) {
+        generateLogMessageHeader(logLevel);
+        return *this;
+    }
+
     void MessageHandler::generateLogMessageHeader(LogLevel logLevel) {
         if (!messageBuilder.str().empty()) return;
         messageBuilder << currentTime() << "; ";
@@ -84,10 +90,4 @@ namespace Logging {
         loggerReference->commitMessage(messageBuilder.str(), outStreamName);
         messageBuilder.str("");
     }
-
-    MessageHandler &MessageHandler::operator()(LogLevel logLevel) {
-        generateLogMessageHeader(logLevel);
-        return *this;
-    }
-
 }
